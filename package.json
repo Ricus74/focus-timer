@@ -1,0 +1,45 @@
+{
+  "name": "focus-timer",
+  "version": "1.0.0",
+  "description": "Timer, agenda e post-its para desktop",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:linux":   "electron-builder --linux deb",
+    "build:windows": "electron-builder --windows nsis",
+    "build:all":     "electron-builder --linux deb --windows nsis"
+  },
+  "build": {
+    "appId": "com.focustimer.app",
+    "productName": "Focus Timer",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html"
+    ],
+    "linux": {
+      "target": ["deb"],
+      "category": "Utility",
+      "synopsis": "Timer, agenda e post-its para desktop"
+    },
+    "deb": {
+      "depends": []
+    },
+    "win": {
+      "target": ["nsis"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerLanguages": ["pt_BR", "en_US"],
+      "language": "1046"
+    }
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}
