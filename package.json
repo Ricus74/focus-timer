@@ -4,6 +4,7 @@
   "author": {
     "name": "Ricardo",
     "email": "ricus74@gmail.com"
+  },
   "description": "Timer, agenda e post-its para desktop",
   "main": "main.js",
   "scripts": {
