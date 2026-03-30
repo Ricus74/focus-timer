@@ -1,6 +1,9 @@
 {
   "name": "focus-timer",
   "version": "1.0.0",
+  "author": {
+    "name": "Ricardo",
+    "email": "ricus74@gmail.com"
   "description": "Timer, agenda e post-its para desktop",
   "main": "main.js",
   "scripts": {
