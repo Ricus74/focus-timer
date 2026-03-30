@@ -17,6 +17,8 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run build:linux
+      - env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - uses: actions/upload-artifact@v4
         with:
           name: focus-timer-linux-deb
@@ -32,6 +34,8 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run build:windows
+      - env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - uses: actions/upload-artifact@v4
         with:
           name: focus-timer-windows-exe
