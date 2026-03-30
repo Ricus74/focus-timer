@@ -1,0 +1,38 @@
+name: Build Focus Timer
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    name: Build .deb (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run build:linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: focus-timer-linux-deb
+          path: dist/*.deb
+
+  build-windows:
+    name: Build .exe (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run build:windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: focus-timer-windows-exe
+          path: dist/*.exe
