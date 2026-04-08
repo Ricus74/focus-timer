@@ -1,4 +1,3 @@
-require('dotenv').config()
 const {
   app, BrowserWindow, Tray, Menu, nativeImage,
   ipcMain, Notification, screen, shell
@@ -18,8 +17,8 @@ let panelOpen   = false
 let currentUser = null
 let authServer  = null
 
-const CLIENT_ID     = process.env.GOOGLE_CLIENT_ID
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+const CLIENT_ID     = '13099139948-ouhaqct1rcpuit3ba8hodsgfmp7qqufk.apps.googleusercontent.com'
+const CLIENT_SECRET = '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'
 const REDIRECT_URI  = 'http://127.0.0.1:7777/auth/callback'
 const PANEL_W_OPEN   = 420
 const PANEL_W_CLOSED = 36
