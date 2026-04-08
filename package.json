@@ -1,17 +1,17 @@
 {
   "name": "focus-timer",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "description": "Timer, agenda e post-its para desktop",
   "author": {
     "name": "Ricardo",
-    "email": "ricus74@gmail.com"
+    "email": "contato@focustimer.app"
   },
-  "description": "Timer, agenda e post-its para desktop",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:linux":   "electron-builder --linux deb",
+    "build:linux": "electron-builder --linux deb",
     "build:windows": "electron-builder --windows nsis",
-    "build:all":     "electron-builder --linux deb --windows nsis"
+    "build:all": "electron-builder --linux deb --windows nsis"
   },
   "build": {
     "appId": "com.focustimer.app",
@@ -22,28 +22,43 @@
     "files": [
       "main.js",
       "preload.js",
-      "index.html"
+      "index.html",
+      "login.html",
+      "icon.png",
+      "icon.ico"
     ],
     "linux": {
-      "target": ["deb"],
+      "target": [
+        "deb"
+      ],
       "category": "Utility",
-      "synopsis": "Timer, agenda e post-its para desktop"
+      "synopsis": "Timer, agenda e post-its para desktop",
+      "icon": "build/icons"
     },
     "deb": {
       "depends": []
     },
     "win": {
-      "target": ["nsis"]
+      "target": [
+        "nsis"
+      ],
+      "icon": "icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "installerLanguages": ["pt_BR", "en_US"],
+      "installerLanguages": [
+        "pt_BR",
+        "en_US"
+      ],
       "language": "1046"
     }
   },
   "devDependencies": {
     "electron": "^30.0.0",
     "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.1"
   }
 }
