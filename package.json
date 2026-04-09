@@ -9,9 +9,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:linux": "electron-builder --linux deb",
-    "build:windows": "electron-builder --windows nsis",
-    "build:all": "electron-builder --linux deb --windows nsis"
+    "build:linux":   "electron-builder --linux deb --publish never",
+    "build:windows": "electron-builder --windows nsis --publish never",
+    "build:all":     "electron-builder --linux deb --windows nsis --publish never"
   },
   "build": {
     "appId": "com.focustimer.app",
@@ -28,9 +28,7 @@
       "icon.ico"
     ],
     "linux": {
-      "target": [
-        "deb"
-      ],
+      "target": ["deb"],
       "category": "Utility",
       "synopsis": "Timer, agenda e post-its para desktop",
       "icon": "build/icons"
@@ -39,18 +37,13 @@
       "depends": []
     },
     "win": {
-      "target": [
-        "nsis"
-      ],
+      "target": ["nsis"],
       "icon": "icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "installerLanguages": [
-        "pt_BR",
-        "en_US"
-      ],
+      "installerLanguages": ["pt_BR", "en_US"],
       "language": "1046"
     }
   },
