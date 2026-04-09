@@ -1,45 +1,48 @@
-name: Build Focus Timer
+name: Build and Release
+
 on:
   push:
     tags:
       - 'v*'
   workflow_dispatch:
 
-jobs:
-  build-linux:
-    name: Build .deb (Linux)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Instalar dependências
-        run: npm install
-      - name: Build .deb
-        run: npm run build:linux
-      - name: Upload para Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/*.deb
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+permissions:
+  contents: write
 
-  build-windows:
-    name: Build .exe (Windows)
-    runs-on: windows-latest
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            build_cmd: build:linux
+            artifact: '*.deb'
+          - os: windows-latest
+            build_cmd: build:windows
+            artifact: '*.exe'
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - name: Instalar dependências
-        run: npm install
-      - name: Build .exe
-        run: npm run build:windows
-      - name: Upload para Release
-        uses: softprops/action-gh-release@v1
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run ${{ matrix.build_cmd }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.exe
+          files: dist/${{ matrix.artifact }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
