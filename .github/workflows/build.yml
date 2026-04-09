@@ -4,45 +4,52 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            build_cmd: build:linux
-            artifact: '*.deb'
-          - os: windows-latest
-            build_cmd: build:windows
-            artifact: '*.exe'
+  build-linux:
+    name: Build Linux (.deb)
+    runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build
-        run: npm run ${{ matrix.build_cmd }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Upload to Release
-        uses: softprops/action-gh-release@v2
+      - run: npm ci
+      - run: npm run build:linux
+      - uses: actions/upload-artifact@v4
         with:
-          files: dist/${{ matrix.artifact }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: linux-deb
+          path: dist/*.deb
+
+  build-windows:
+    name: Build Windows (.exe)
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build:windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe
+          path: dist/*.exe
+
+  release:
+    name: Create Release
+    needs: [build-linux, build-windows]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/download-artifact@v4
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            linux-deb/*.deb
+            windows-exe/*.exe
